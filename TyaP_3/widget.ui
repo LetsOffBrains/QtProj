@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Widget</class>
+ <widget class="QWidget" name="Widget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>800</width>
+    <height>600</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>800</width>
+    <height>600</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Widget</string>
+  </property>
+  <widget class="QSplitter" name="splitter">
+   <property name="geometry">
+    <rect>
+     <x>11</x>
+     <y>11</y>
+     <width>781</width>
+     <height>581</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <property name="handleWidth">
+    <number>8</number>
+   </property>
+   <widget class="QWidget" name="">
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0" colspan="2">
+      <widget class="QLineEdit" name="leTerm">
+       <property name="text">
+        <string>a b</string>
+       </property>
+       <property name="placeholderText">
+        <string>Входной алфавит</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0" colspan="2">
+      <widget class="QLineEdit" name="leMag">
+       <property name="text">
+        <string>Z a b</string>
+       </property>
+       <property name="placeholderText">
+        <string>Магазинный алфавит</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0" colspan="2">
+      <widget class="QLineEdit" name="leStates">
+       <property name="text">
+        <string>S</string>
+       </property>
+       <property name="placeholderText">
+        <string>Конечное множество состояний</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="lStart">
+       <property name="text">
+        <string>Начальное состояние:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QComboBox" name="cbStart">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <item>
+        <property name="text">
+         <string>S</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="4" column="0" colspan="2">
+      <widget class="QLineEdit" name="leFinish">
+       <property name="text">
+        <string>S</string>
+       </property>
+       <property name="placeholderText">
+        <string>Подмножество заключительных состояний</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0" colspan="2">
+      <widget class="QLineEdit" name="leStartMag">
+       <property name="text">
+        <string>Z</string>
+       </property>
+       <property name="placeholderText">
+        <string>Начальное содержимое магазина</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0" colspan="2">
+      <widget class="QTableWidget" name="twRules">
+       <property name="alternatingRowColors">
+        <bool>true</bool>
+       </property>
+       <property name="selectionMode">
+        <enum>QAbstractItemView::SingleSelection</enum>
+       </property>
+       <property name="selectionBehavior">
+        <enum>QAbstractItemView::SelectRows</enum>
+       </property>
+       <attribute name="horizontalHeaderDefaultSectionSize">
+        <number>100</number>
+       </attribute>
+       <attribute name="horizontalHeaderMinimumSectionSize">
+        <number>100</number>
+       </attribute>
+       <attribute name="horizontalHeaderStretchLastSection">
+        <bool>true</bool>
+       </attribute>
+       <row>
+        <property name="text">
+         <string>1</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>2</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>3</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>4</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>5</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>6</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>7</string>
+        </property>
+       </row>
+       <column>
+        <property name="text">
+         <string>Левая часть правила</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Правая часть правила</string>
+        </property>
+       </column>
+       <item row="0" column="0">
+        <property name="text">
+         <string>S a Z</string>
+        </property>
+       </item>
+       <item row="0" column="1">
+        <property name="text">
+         <string>S aZ</string>
+        </property>
+       </item>
+       <item row="1" column="0">
+        <property name="text">
+         <string>S b Z</string>
+        </property>
+       </item>
+       <item row="1" column="1">
+        <property name="text">
+         <string>S bZ</string>
+        </property>
+       </item>
+       <item row="2" column="0">
+        <property name="text">
+         <string>S a a</string>
+        </property>
+       </item>
+       <item row="2" column="1">
+        <property name="text">
+         <string>S aa</string>
+        </property>
+       </item>
+       <item row="3" column="0">
+        <property name="text">
+         <string>S b b</string>
+        </property>
+       </item>
+       <item row="3" column="1">
+        <property name="text">
+         <string>S bb</string>
+        </property>
+       </item>
+       <item row="4" column="0">
+        <property name="text">
+         <string>S a b</string>
+        </property>
+       </item>
+       <item row="4" column="1">
+        <property name="text">
+         <string>S @</string>
+        </property>
+       </item>
+       <item row="5" column="0">
+        <property name="text">
+         <string>S b a</string>
+        </property>
+       </item>
+       <item row="5" column="1">
+        <property name="text">
+         <string>S @</string>
+        </property>
+       </item>
+       <item row="6" column="0">
+        <property name="text">
+         <string>S @ Z</string>
+        </property>
+       </item>
+       <item row="6" column="1">
+        <property name="text">
+         <string>S @</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="7" column="0">
+      <widget class="QPushButton" name="pbAdd">
+       <property name="text">
+        <string>Доавить правило</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1">
+      <widget class="QPushButton" name="pbDelete">
+       <property name="text">
+        <string>Удалить выделеное</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLineEdit" name="leInput">
+       <property name="placeholderText">
+        <string>Входная цепочка</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QListWidget" name="lwOutput"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

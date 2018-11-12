@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>StorageWindow</class>
+ <widget class="QMainWindow" name="StorageWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QWidget" name="gridLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>9</x>
+      <y>9</y>
+      <width>781</width>
+      <height>541</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0" rowspan="5" colspan="4">
+      <widget class="QTableView" name="tableView">
+       <property name="selectionBehavior">
+        <enum>QAbstractItemView::SelectRows</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="2">
+      <widget class="QPushButton" name="pbArrival">
+       <property name="text">
+        <string>Arrival of Goods</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="3">
+      <widget class="QPushButton" name="pbDelete">
+       <property name="text">
+        <string>Delete Product</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="4">
+      <widget class="QPushButton" name="pbAdd">
+       <property name="text">
+        <string>Add Product</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="4" rowspan="2" colspan="2">
+      <widget class="QLabel" name="lPicture">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="5">
+      <widget class="QPushButton" name="pbUpdCost">
+       <property name="text">
+        <string>Update Cost</string>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QLineEdit" name="leFilter"/>
+     </item>
+     <item row="4" column="4">
+      <widget class="QDateEdit" name="deFrom">
+       <property name="date">
+        <date>
+         <year>2018</year>
+         <month>1</month>
+         <day>22</day>
+        </date>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="5">
+      <widget class="QDateEdit" name="deTo">
+       <property name="date">
+        <date>
+         <year>2018</year>
+         <month>1</month>
+         <day>22</day>
+        </date>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="4">
+      <widget class="QLabel" name="lFrom">
+       <property name="text">
+        <string>From</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignBottom|Qt::AlignHCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="5">
+      <widget class="QLabel" name="lTo">
+       <property name="text">
+        <string>To</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignBottom|Qt::AlignHCenter</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>Menu</string>
+    </property>
+    <addaction name="showProductsAction"/>
+    <addaction name="actionStorage"/>
+    <addaction name="actionRecipes"/>
+   </widget>
+   <addaction name="menu"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="showProductsAction">
+   <property name="text">
+    <string>Products</string>
+   </property>
+  </action>
+  <action name="actionStorage">
+   <property name="text">
+    <string>Storage</string>
+   </property>
+  </action>
+  <action name="actionRecipes">
+   <property name="text">
+    <string>Recipes</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
