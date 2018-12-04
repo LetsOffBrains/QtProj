@@ -1,0 +1,263 @@
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include "funcs.hpp"
+
+void eg_encrypt(string);
+void eg_decrypt(string);
+void rsa_encrypt(string);
+void rsa_decrypt(string);
+void vern_encrypt(string);
+void vern_decrypt(string);
+void shamir(long long);
+
+int main()
+{
+    cout << "Hello World!" << endl;
+    return 0;
+}
+
+void eg_encrypt(string filename) {
+    vector<string> names = split(filename,'.');
+
+    ifstream in;
+    in.open(filename.c_str(), ios_base::binary);
+
+    ofstream out, setting;
+    out.open((names[0] + ".code_" + names[1]).c_str(), ios_base::binary);
+    setting.open((names[0] + ".setting").c_str(), ios_base::binary);
+
+    ll p, g, c, d;
+
+    p = generate_num(1000000);
+
+    do{
+        g = rand() % (p-1);
+    }while(fPow(g,(p-1)/2,p) == 1);
+
+    c = rand() % (p-1);
+    d = fPow(g,c,p);
+    setting << p <<" "<< c;
+    setting.close();
+
+    cout << "P = " << p << endl
+         << "g = " << g << endl
+         << "c = " << c << endl
+         << "d = " << d << endl;
+
+
+
+    int length = len(in);
+    char x;
+    for(int i=0; i<length; i++) {
+        in.read(&x,sizeof(x));
+        ll k = rand() % (p-1);
+        ll r = fPow(g,k,p);
+        ll e = (x * fPow(d,k,p)) % p;
+        out << r << " " << e << " ";
+    }
+
+    cout << endl << "Done.." << endl;
+
+    in.close();
+    out.close();
+}
+
+void eg_decrypt(string filename) {
+    vector<string> names = split(filename,'.');
+    vector<string> rrr = split(names[1],'_');
+
+    ifstream in, setting;
+    in.open(filename.c_str(), ios_base::in);
+    setting.open((names[0] + ".setting").c_str(), ios_base::binary);
+
+    ofstream out;
+    out.open((names[0] + "_decr." + rrr[1]).c_str(), ios_base::binary);
+
+    ll p,c;
+    setting >> p >> c;
+    setting.close();
+
+    cout << "P = " << p << endl
+         << "c = " << c << endl;
+
+    ll r,e;
+    while(in >> r >> e) {
+        ll m = (e * fPow(r,p-1-c,p)) % p;
+        out << (char)m;
+    }
+    in.close();
+    out.close();
+    cout << "Done.." << endl;
+
+}
+
+void rsa_encrypt(string filename) {
+    vector<string> names = split(filename,'.');
+
+    ifstream in;
+    in.open(filename.c_str(), ios_base::binary);
+
+    ofstream out, setting;
+    out.open((names[0] + ".code_" + names[1]).c_str(), ios_base::binary);
+    setting.open((names[0] + ".setting").c_str(), ios_base::binary);
+
+    ll P, Q, N, phi, c, d;
+
+    P = generate_num_rsa(10000);
+    Q = generate_num_rsa(10000);
+
+    N = P*Q;
+    phi = (P-1) * (Q-1);
+
+    ll* temp;
+    int i = 0;
+    do{
+        if(i) delete [] temp;
+        d = rand() % phi;
+        temp = evklid(phi,d);
+        i++;
+        if(temp[0] != 1) continue;
+
+        c = temp[2];
+        if(c < 0) c += phi;
+    }while(d >= phi || c >= phi);
+
+    delete [] temp;
+
+    setting << N <<" "<< c;
+    setting.close();
+
+    cout << "P = " << P << endl
+         << "Q = " << Q << endl
+         << "N = " << N << endl
+         << "phi = " << phi << endl
+         << "c = " << c << endl
+         << "d = " << d << endl;
+
+
+
+    int length = len(in);
+    char x;
+    for(int i=0; i<length; i++) {
+        in.read(&x,sizeof(x));
+        out << fPow(x,d,N) << " ";
+    }
+
+    cout << "Done.." << endl;
+
+    in.close();
+    out.close();
+}
+
+void rsa_decrypt(string filename) {
+    vector<string> names = split(filename,'.');
+    vector<string> rrr = split(names[1],'_');
+
+    ifstream in, setting;
+    in.open(filename.c_str(), ios_base::in);
+    setting.open((names[0] + ".setting").c_str(), ios_base::binary);
+
+    ofstream out;
+    out.open((names[0] + "_decr." + rrr[1]).c_str(), ios_base::binary);
+
+    ll N,c;
+    setting >> N >> c;
+    setting.close();
+
+    cout << "N = " << N << endl
+         << "c = " << c << endl;
+
+    ll e;
+    while(in >> e) {
+        ll m = fPow(e,c,N);
+        out << (char)m;
+    }
+    in.close();
+    out.close();
+    cout << "Done.." << endl;
+
+}
+
+void vern_encrypt(string filename) {
+    vector<string> names = split(filename,'.');
+
+    ifstream in;
+    in.open(filename.c_str(), ios_base::binary);
+
+    ofstream out, key;
+    out.open((names[0] + ".code_" + names[1]).c_str(), ios_base::binary);
+    key.open((names[0] + ".code_key").c_str(), ios_base::binary);
+
+    int length = len(in);
+    char x;
+    for(int i=0; i<length; i++) {
+        in.read(&x,sizeof(x));
+        char k = 2 + rand() % 253;
+        char c = x ^ k;
+        key << k;
+        out << c;
+    }
+
+    cout << "Done.." << endl;
+
+    in.close();
+    out.close();
+    key.close();
+}
+
+void vern_decrypt(string filename) {
+    vector<string> names = split(filename,'.');
+    vector<string> rrr = split(names[1],'_');
+
+    ifstream in, key;
+    in.open(filename.c_str(), ios_base::in);
+    key.open((names[0] + ".code_key").c_str(), ios_base::binary);
+
+    ofstream out;
+    out.open((names[0] + "_decr." + rrr[1]).c_str(), ios_base::binary);
+
+    int length = len(in);
+    char x,k;
+    for(int i=0; i<length; i++) {
+        in.read(&x,sizeof(x));
+        key.read(&k,sizeof(k));
+        out << (char)(x ^ k);
+    }
+
+    in.close();
+    out.close();
+    key.close();
+    cout << "Done.." << endl;
+}
+
+void shamir(long long m){
+    ll Ca, Cb, Da, Db, p;
+    ll* temp;
+
+    p = generate_num(100000);
+
+    int i = 0;
+    do {
+        if(i) delete [] temp;
+        Ca = generate_num(p-1);
+        temp = evklid(p-1,Ca);
+        i++;
+    }while(Ca > p - 1 && temp[0] != 1);
+
+    Da = temp[2];
+    if (Da < 0) Da += p-1;
+    delete [] temp;
+
+    i = 0;
+    do {
+        if(i) delete [] temp;
+        Cb = generate_num(p-1);
+        temp = evklid(p-1,Cb);
+        i++;
+    }while(Cb > p - 1 && temp[0] != 1);
+
+    Db = temp[2];
+    if (Db < 0) Db += p-1;
+    delete [] temp;
+}

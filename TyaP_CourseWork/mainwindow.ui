@@ -32,10 +32,10 @@
    <string>Курсовой Проект</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>7</x>
       <y>10</y>
       <width>781</width>
       <height>531</height>
@@ -49,26 +49,19 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="4" rowspan="14">
-      <widget class="QListWidget" name="listWidget">
-       <property name="sortingEnabled">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
      <item row="1" column="0" colspan="4">
       <widget class="QLineEdit" name="leTerm">
        <property name="toolTip">
         <string>Входной алфавит</string>
        </property>
        <property name="inputMask">
-        <string>X x x x x x x x x x; </string>
+        <string/>
        </property>
        <property name="text">
-        <string>         </string>
+        <string/>
        </property>
        <property name="maxLength">
-        <number>19</number>
+        <number>32767</number>
        </property>
        <property name="cursorPosition">
         <number>0</number>
@@ -78,20 +71,17 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="0" colspan="4">
-      <widget class="QLabel" name="label">
+     <item row="0" column="4">
+      <widget class="QLabel" name="lRegExp">
        <property name="text">
-        <string>Кратность вхождения некоторого символа:</string>
+        <string>Регулярное выражение:</string>
        </property>
       </widget>
      </item>
-     <item row="3" column="0" colspan="3">
-      <widget class="QComboBox" name="comboBox">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="toolTip">
-        <string>Символ, кратность которого нужно учитывать</string>
+     <item row="2" column="0" colspan="4">
+      <widget class="QLabel" name="lRepeat">
+       <property name="text">
+        <string>Кратность вхождения некоторого символа:</string>
        </property>
       </widget>
      </item>
@@ -108,13 +98,6 @@
        </property>
       </widget>
      </item>
-     <item row="4" column="0" colspan="4">
-      <widget class="QLabel" name="lSubString">
-       <property name="text">
-        <string>Подстрока:</string>
-       </property>
-      </widget>
-     </item>
      <item row="5" column="0" colspan="4">
       <widget class="QLineEdit" name="leSubString">
        <property name="enabled">
@@ -128,95 +111,28 @@
        </property>
       </widget>
      </item>
-     <item row="6" column="0" colspan="4">
+     <item row="7" column="0" colspan="4">
       <widget class="Line" name="line">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
      </item>
-     <item row="7" column="0" colspan="4">
-      <widget class="QLabel" name="lRegExp">
-       <property name="text">
-        <string>Регулярное выражение:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="8" column="0" colspan="4">
-      <widget class="QLineEdit" name="leRegExp">
-       <property name="toolTip">
-        <string>Регулярное выражение</string>
-       </property>
-       <property name="placeholderText">
-        <string>a(a+b+c)*b(a+b+c)*c</string>
-       </property>
-      </widget>
-     </item>
-     <item row="10" column="0" colspan="4">
-      <widget class="QLabel" name="lOutPut">
-       <property name="text">
-        <string>Вывод цепочек заданной длины:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="11" column="0">
+     <item row="9" column="0" rowspan="2">
       <widget class="QLabel" name="lFrom">
        <property name="text">
         <string>От:</string>
        </property>
       </widget>
      </item>
-     <item row="11" column="1">
-      <widget class="QSpinBox" name="sbFrom">
-       <property name="toolTip">
-        <string>Минимальная длина цепочек на вывод</string>
-       </property>
-       <property name="maximum">
-        <number>20</number>
-       </property>
-      </widget>
-     </item>
-     <item row="11" column="2">
+     <item row="9" column="2" rowspan="2">
       <widget class="QLabel" name="lTo">
        <property name="text">
         <string>До:</string>
        </property>
       </widget>
      </item>
-     <item row="11" column="3">
-      <widget class="QSpinBox" name="sbTo">
-       <property name="toolTip">
-        <string>Максимальная длина цепочек на вывод</string>
-       </property>
-       <property name="suffix">
-        <string/>
-       </property>
-       <property name="maximum">
-        <number>20</number>
-       </property>
-      </widget>
-     </item>
-     <item row="13" column="0" colspan="4">
-      <spacer name="verticalSpacer">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="9" column="0" colspan="4">
-      <widget class="Line" name="line_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="12" column="0" colspan="4">
+     <item row="11" column="0" colspan="4">
       <widget class="QPushButton" name="pbOutput">
        <property name="enabled">
         <bool>false</bool>
@@ -229,6 +145,102 @@
        </property>
       </widget>
      </item>
+     <item row="9" column="3" rowspan="2">
+      <widget class="QSpinBox" name="sbTo">
+       <property name="toolTip">
+        <string>Максимальная длина цепочек на вывод</string>
+       </property>
+       <property name="suffix">
+        <string/>
+       </property>
+       <property name="maximum">
+        <number>10</number>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="0" colspan="4">
+      <widget class="QLabel" name="lOutPut">
+       <property name="text">
+        <string>Вывод цепочек заданной длины:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0" colspan="4">
+      <widget class="QPushButton" name="pbCreateReg">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>Создает регулярное выражение на основе введенных кратности и подстроки</string>
+       </property>
+       <property name="text">
+        <string>Создать Регулярное Выражение</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="1" rowspan="2">
+      <widget class="QSpinBox" name="sbFrom">
+       <property name="toolTip">
+        <string>Минимальная длина цепочек на вывод</string>
+       </property>
+       <property name="maximum">
+        <number>10</number>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="4" rowspan="11">
+      <widget class="QPlainTextEdit" name="teRegEx">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Окно ввода регулярного выражения.&lt;/p&gt;&lt;p&gt;Допустимые операторы:&lt;/p&gt;&lt;p&gt;+ - или&lt;/p&gt;&lt;p&gt;* - повторение от 0 до бесконечности&lt;/p&gt;&lt;p&gt;() - группировка&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="plainText">
+        <string>((b+c)* a (b+c)* a (b+c)*)* 
+(
+((b+c)* bc (b+c)*)
++
+((b+c)* a (b+c)* bc (b+c)* a (b+c)*)
+) 
+((b+c)* a( b+c)* a (b+c)*)*
+</string>
+       </property>
+       <property name="placeholderText">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0" colspan="4">
+      <widget class="QLabel" name="lSubString">
+       <property name="text">
+        <string>Подстрока:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0" colspan="3">
+      <widget class="QComboBox" name="cbRepeat">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>Символ, кратность которого нужно учитывать</string>
+       </property>
+      </widget>
+     </item>
+     <item row="12" column="0" colspan="5">
+      <widget class="QPlainTextEdit" name="teOutput">
+       <property name="toolTip">
+        <string>Вывод</string>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+       <property name="plainText">
+        <string/>
+       </property>
+       <property name="placeholderText">
+        <string/>
+       </property>
+      </widget>
+     </item>
     </layout>
    </widget>
   </widget>
@@ -238,7 +250,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="mFile">
@@ -262,7 +274,7 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
