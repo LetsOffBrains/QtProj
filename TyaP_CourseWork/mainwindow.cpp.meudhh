@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 	ui->setupUi(this);
 
-	forbiden << "*" << "(" << ")" << "+" << "[" << "]" << "|" << "\\";
+	forbiden << "*" << "(" << ")" << "+" << "[" << "]";
 	separator = " ";
 
 	toMul = 1;
@@ -193,41 +193,25 @@ void MainWindow::on_leSubString_returnPressed()
 
 void MainWindow::on_pbOutput_clicked()
 {
-	ui->teOutput->clear();
-
 	QString RegEx = ui->teRegEx->toPlainText();
 	RegEx.remove(' ');
 	RegEx.remove('\n');
 	RegEx.remove('\t');
 
 	if(check_RegEx(RegEx)){
-		mapBlocks.clear();
-		split_RegEx(RegEx, "Start");
+
 	}
 	else{
 		ui->teOutput->setPlainText("Не верное регулярное выражение");
 	}
-
-//	RegEx.replace('+', '|');
-//	QRegExp re(RegEx);
-//	if(re.isValid()){
-
-//	}
-//	else{
-//		ui->teOutput->setPlainText(re.errorString());
-//	}
 }
 
 bool MainWindow::check_RegEx(QString RegEx)
 {
-	QRegExp simbols("[" + vTerm.join("") + "]");
-	for(int i = 0; i < RegEx.length(); ++i){
-		if(!simbols.exactMatch(RegEx.mid(i, 1))
-				&& RegEx[i] != '(' && RegEx[i] != ')'
-				&& RegEx[i] != '*' && RegEx[i] != '+'){
-			qDebug() << "Найден недопустимый символ в позиции: " << simbols.matchedLength();
-			return false;
-		}
+	QRegExp simbols("[" + vTerm.join("") + forbiden.join("") + "]");
+	if(!simbols.exactMatch(RegEx)){
+		qDebug() << "Найден недопустимый символ в позиции: " << simbols.matchedLength();
+		return false;
 	}
 
 	int left = 0, right = 0, last = -1;
@@ -266,99 +250,15 @@ bool MainWindow::check_RegEx(QString RegEx)
 			}
 			else{
 				if(RegEx[i - 1] == '('){
-					qDebug() << "Найден недопустимый символ перед плюсом в позиции: " << i - 1;
+					qDebug() << "Найден недопустимый символ перед алюсом в позиции: " << i - 1;
 					return false;
 				}
 			}
 		}
 	}
 	if(left != right){
-		qDebug() << "Не хватает закрывающей скобки";
 		return false;
 	}
 
 	return true;
 }
-
-void MainWindow::split_RegEx(QString RegEx, QString parent)
-{
-	qDebug() << "RegEx: " << RegEx;
-	QStringList list;
-	int left = 0, right = 0, last = 0;
-	if(RegEx[0] == '('){
-		++left;
-	}
-
-	for(int i = 1; i <= RegEx.length(); ++i){
-		if(RegEx[i] == '('){
-			if(left == right && i != last){
-				list << RegEx.mid(last, i - last);
-				last = i;
-				left = right = 0;
-			}
-			++left;
-		}
-		else if(RegEx[i] == ')'){
-			++right;
-		}
-		else if(left == right && i != last){
-			if(RegEx[i] == '*'){
-				list << RegEx.mid(last, i - last + 1);
-				last = i + 1;
-				if(RegEx[i - 1] == ')'){
-					left = right = 0;
-				}
-			}
-			else{
-				list << RegEx.mid(last, i - last);
-				last = i;
-			}
-		}
-	}
-
-	if(list.count() > 1){
-		qDebug() << "BlockList:" << list;
-		for(int i = 0; i < list.count(); ++i){
-			if(list.at(i).length() > 1){
-				split_RegEx(list.at(i), RegEx);
-			}
-			else{
-				mapBlocks.insert(parent, QStringList(list.at(i)));
-			}
-		}
-	}
-	else{
-		QString str = list.at(0);
-		if(str.left(1) == "("){
-			str.remove(0, 1);
-			if(str.right(1) == ")"){
-				str.chop(1);
-				split_RegEx(str, RegEx);
-			}
-			else if(str.right(2) == ")*"){
-				str.chop(2);
-				split_RegEx(str, RegEx);
-			}
-		}
-		else{
-			mapBlocks.insert(parent, QStringList(str));
-		}
-	}
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

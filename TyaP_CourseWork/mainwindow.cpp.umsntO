@@ -201,7 +201,6 @@ void MainWindow::on_pbOutput_clicked()
 	RegEx.remove('\t');
 
 	if(check_RegEx(RegEx)){
-		mapBlocks.clear();
 		split_RegEx(RegEx, "Start");
 	}
 	else{
@@ -315,15 +314,15 @@ void MainWindow::split_RegEx(QString RegEx, QString parent)
 			}
 		}
 	}
-
+	//list.removeAll("");
 	if(list.count() > 1){
 		qDebug() << "BlockList:" << list;
 		for(int i = 0; i < list.count(); ++i){
 			if(list.at(i).length() > 1){
-				split_RegEx(list.at(i), RegEx);
+				split_RegEx(list.at(i), "123"); // wrong
 			}
 			else{
-				mapBlocks.insert(parent, QStringList(list.at(i)));
+				mapBlocks.insert(QStringList(list.at(i)), parent);
 			}
 		}
 	}
@@ -333,15 +332,12 @@ void MainWindow::split_RegEx(QString RegEx, QString parent)
 			str.remove(0, 1);
 			if(str.right(1) == ")"){
 				str.chop(1);
-				split_RegEx(str, RegEx);
+				split_RegEx(str);
 			}
 			else if(str.right(2) == ")*"){
 				str.chop(2);
-				split_RegEx(str, RegEx);
+				split_RegEx(str, "123");
 			}
-		}
-		else{
-			mapBlocks.insert(parent, QStringList(str));
 		}
 	}
 }

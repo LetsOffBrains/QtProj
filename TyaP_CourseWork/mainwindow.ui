@@ -135,7 +135,7 @@
      <item row="11" column="0" colspan="4">
       <widget class="QPushButton" name="pbOutput">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="toolTip">
         <string>Выводит цепочки заданой длины на основе регулярного выражения</string>
