@@ -4,9 +4,4 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
-        main.cpp \
-    sha256.cpp
-
-HEADERS += \
-    funcs.hpp \
-    sha256.h
+        main.cpp

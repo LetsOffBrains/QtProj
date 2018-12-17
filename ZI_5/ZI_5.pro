@@ -8,5 +8,4 @@ SOURCES += \
     sha256.cpp
 
 HEADERS += \
-    funcs.hpp \
     sha256.h
