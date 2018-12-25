@@ -5,6 +5,8 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QMap>
+#include <QFileDialog>
+#include "signnode.h"
 
 namespace Ui {
 class MainWindow;
@@ -29,17 +31,13 @@ public:
 	QString oldToRepeat, oldSubString;
 	int oldToMul;
 
-	QMap<QString, QStringList> mapBlocks;
 	QMap<QString, QStringList> mapSave;
-	QMap<QString, int> mapPot;
+
+	SignNode *signTree;
 
 public slots:
-	void on_aTheme_activated();
-	void on_aAuthor_activated();
-	void on_aSave_activated();
-
 	bool check_RegEx(QString RegEx);
-	void split_RegEx(QString RegEx, QString parent);
+	void cutResult(QStringList &list, int min, int max);
 
 private slots:
     void on_leTerm_editingFinished();
@@ -57,6 +55,12 @@ private slots:
 	void on_leSubString_returnPressed();
 
 	void on_pbOutput_clicked();
+
+	void on_aSave_triggered();
+
+	void on_aTheme_triggered();
+
+	void on_aAuthor_triggered();
 
 private:
     Ui::MainWindow *ui;

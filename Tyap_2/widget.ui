@@ -82,7 +82,7 @@
      <item>
       <widget class="QLineEdit" name="leTerm">
        <property name="text">
-        <string>a b</string>
+        <string/>
        </property>
        <property name="placeholderText">
         <string>a b c</string>
@@ -99,7 +99,7 @@
      <item>
       <widget class="QLineEdit" name="leStates">
        <property name="text">
-        <string>S A</string>
+        <string/>
        </property>
        <property name="placeholderText">
         <string>S A B C</string>
@@ -130,7 +130,7 @@
      <item>
       <widget class="QLineEdit" name="leFinish">
        <property name="text">
-        <string>A</string>
+        <string/>
        </property>
        <property name="placeholderText">
         <string>B C</string>

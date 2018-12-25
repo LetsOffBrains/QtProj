@@ -51,6 +51,9 @@
      </item>
      <item row="1" column="0" colspan="4">
       <widget class="QLineEdit" name="leTerm">
+       <property name="tabletTracking">
+        <bool>false</bool>
+       </property>
        <property name="toolTip">
         <string>Входной алфавит</string>
        </property>
@@ -78,10 +81,16 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="0" colspan="4">
-      <widget class="QLabel" name="lRepeat">
-       <property name="text">
-        <string>Кратность вхождения некоторого символа:</string>
+     <item row="5" column="0" colspan="4">
+      <widget class="QLineEdit" name="leSubString">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>Подстрока, которая обязательно должна встречаться</string>
+       </property>
+       <property name="placeholderText">
+        <string>bc</string>
        </property>
       </widget>
      </item>
@@ -95,19 +104,6 @@
        </property>
        <property name="maximum">
         <number>5</number>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="0" colspan="4">
-      <widget class="QLineEdit" name="leSubString">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="toolTip">
-        <string>Подстрока, которая обязательно должна встречаться</string>
-       </property>
-       <property name="placeholderText">
-        <string>bc</string>
        </property>
       </widget>
      </item>
@@ -125,43 +121,10 @@
        </property>
       </widget>
      </item>
-     <item row="9" column="2" rowspan="2">
-      <widget class="QLabel" name="lTo">
+     <item row="2" column="0" colspan="4">
+      <widget class="QLabel" name="lRepeat">
        <property name="text">
-        <string>До:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="11" column="0" colspan="4">
-      <widget class="QPushButton" name="pbOutput">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="toolTip">
-        <string>Выводит цепочки заданой длины на основе регулярного выражения</string>
-       </property>
-       <property name="text">
-        <string>Вывод</string>
-       </property>
-      </widget>
-     </item>
-     <item row="9" column="3" rowspan="2">
-      <widget class="QSpinBox" name="sbTo">
-       <property name="toolTip">
-        <string>Максимальная длина цепочек на вывод</string>
-       </property>
-       <property name="suffix">
-        <string/>
-       </property>
-       <property name="maximum">
-        <number>10</number>
-       </property>
-      </widget>
-     </item>
-     <item row="8" column="0" colspan="4">
-      <widget class="QLabel" name="lOutPut">
-       <property name="text">
-        <string>Вывод цепочек заданной длины:</string>
+        <string>Кратность вхождения некоторого символа:</string>
        </property>
       </widget>
      </item>
@@ -178,33 +141,46 @@
        </property>
       </widget>
      </item>
-     <item row="9" column="1" rowspan="2">
-      <widget class="QSpinBox" name="sbFrom">
-       <property name="toolTip">
-        <string>Минимальная длина цепочек на вывод</string>
-       </property>
-       <property name="maximum">
-        <number>10</number>
+     <item row="9" column="2" rowspan="2">
+      <widget class="QLabel" name="lTo">
+       <property name="text">
+        <string>До:</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="4" rowspan="11">
-      <widget class="QPlainTextEdit" name="teRegEx">
+     <item row="9" column="3" rowspan="2">
+      <widget class="QSpinBox" name="sbTo">
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Окно ввода регулярного выражения.&lt;/p&gt;&lt;p&gt;Допустимые операторы:&lt;/p&gt;&lt;p&gt;+ - или&lt;/p&gt;&lt;p&gt;* - повторение от 0 до бесконечности&lt;/p&gt;&lt;p&gt;() - группировка&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>Максимальная длина цепочек на вывод</string>
        </property>
-       <property name="plainText">
-        <string>((b+c)* a (b+c)* a (b+c)*)* 
-(
-((b+c)* bc (b+c)*)
-+
-((b+c)* a (b+c)* bc (b+c)* a (b+c)*)
-) 
-((b+c)* a( b+c)* a (b+c)*)*
-</string>
-       </property>
-       <property name="placeholderText">
+       <property name="suffix">
         <string/>
+       </property>
+       <property name="maximum">
+        <number>6</number>
+       </property>
+       <property name="value">
+        <number>6</number>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="0" colspan="4">
+      <widget class="QPushButton" name="pbOutput">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="toolTip">
+        <string>Выводит цепочки заданой длины на основе регулярного выражения</string>
+       </property>
+       <property name="text">
+        <string>Вывод</string>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="0" colspan="4">
+      <widget class="QLabel" name="lOutPut">
+       <property name="text">
+        <string>Вывод цепочек заданной длины:</string>
        </property>
       </widget>
      </item>
@@ -225,21 +201,46 @@
        </property>
       </widget>
      </item>
-     <item row="12" column="0" colspan="5">
-      <widget class="QPlainTextEdit" name="teOutput">
+     <item row="1" column="4" rowspan="11">
+      <widget class="QPlainTextEdit" name="teRegEx">
        <property name="toolTip">
-        <string>Вывод</string>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Окно ввода регулярного выражения.&lt;/p&gt;&lt;p&gt;Допустимые операторы:&lt;/p&gt;&lt;p&gt;+ - или&lt;/p&gt;&lt;p&gt;* - повторение от 0 до бесконечности&lt;/p&gt;&lt;p&gt;() - группировка&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="plainText">
-        <string/>
+        <string>(ab+bc)*</string>
        </property>
        <property name="placeholderText">
         <string/>
        </property>
       </widget>
+     </item>
+     <item row="9" column="1" rowspan="2">
+      <widget class="QSpinBox" name="sbFrom">
+       <property name="toolTip">
+        <string>Минимальная длина цепочек на вывод</string>
+       </property>
+       <property name="maximum">
+        <number>10</number>
+       </property>
+      </widget>
+     </item>
+     <item row="12" column="0" colspan="4">
+      <widget class="QTreeWidget" name="treeWidget">
+       <property name="uniformRowHeights">
+        <bool>true</bool>
+       </property>
+       <property name="allColumnsShowFocus">
+        <bool>true</bool>
+       </property>
+       <column>
+        <property name="text">
+         <string notr="true">1</string>
+        </property>
+       </column>
+      </widget>
+     </item>
+     <item row="12" column="4">
+      <widget class="QListWidget" name="lwOutput"/>
      </item>
     </layout>
    </widget>
@@ -278,14 +279,20 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="action">
+  <action name="aOpen">
    <property name="text">
+    <string>Открыть</string>
+   </property>
+   <property name="toolTip">
     <string>Открыть</string>
    </property>
   </action>
   <action name="aSave">
    <property name="text">
     <string>Сохранить</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
   <action name="aTheme">
@@ -300,6 +307,19 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>leTerm</tabstop>
+  <tabstop>cbRepeat</tabstop>
+  <tabstop>sbMul</tabstop>
+  <tabstop>leSubString</tabstop>
+  <tabstop>pbCreateReg</tabstop>
+  <tabstop>sbFrom</tabstop>
+  <tabstop>sbTo</tabstop>
+  <tabstop>pbOutput</tabstop>
+  <tabstop>teRegEx</tabstop>
+  <tabstop>treeWidget</tabstop>
+  <tabstop>lwOutput</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

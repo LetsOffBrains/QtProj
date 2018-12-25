@@ -28,6 +28,7 @@ void Widget::on_leTerm_editingFinished()
 {
 	term = ui->leTerm->text().split("", QString::SkipEmptyParts);
 	term.removeAll(nil);
+	term.removeAll(sep);
 	term.removeDuplicates();
 	ui->leTerm->setText(term.join(sep));
 	//check rules
@@ -38,6 +39,7 @@ void Widget::on_leMag_editingFinished()
 {
 	mag = ui->leMag->text().split("", QString::SkipEmptyParts);
 	mag.removeAll(nil);
+	mag.removeAll(sep);
 	mag.removeDuplicates();
 	ui->leMag->setText(mag.join(sep));
 
@@ -51,6 +53,7 @@ void Widget::on_leStates_editingFinished()
 {
 	states = ui->leStates->text().split("", QString::SkipEmptyParts);
 	states.removeAll(nil);
+	states.removeAll(sep);
 	states.removeDuplicates();
 	ui->leStates->setText(states.join(sep));
 
@@ -265,13 +268,42 @@ void Widget::on_leInput_editingFinished()
 				if(right.at(2) != nil){
 					curTrans.append(right.at(2));
 				}
-				step += " -> (" + curState + ", " + curMag + ", " + curTrans + ") ->";//right.join(", ")
+				step += " -> (" + curState + ", " + curMag + ", " + (!curTrans.isEmpty() ? curTrans : nil) + ") ->";//right.join(", ")
 				ui->lwOutput->addItem(step);
 				curText.remove(0, 1);
 			}
+			else if(rules[curState].contains(nil)){ // found simbol but didnt found mag
+				qDebug() << "Found empty step for this state" << curMag;
+				if(rules[curState][nil].contains(m)){
+					qDebug() << "Found mag Simbol for Empty Step" << curMag;
+					QStringList right = rules[curState][nil][m];
+					curState = right.at(0);
+					if(right.at(1) == nil){ // Delete
+						curMag.remove(0, 1);
+					}
+					else if(mag.contains(right.at(1))){ // Nothing
+
+					}
+					else{ // Split to Add
+						curMag.remove(0, 1);
+						curMag.insert(0, right.at(1));
+					}
+					if(right.at(2) != nil){
+						curTrans.append(right.at(2));
+					}
+					step += " -> (" + curState + ", " + curMag + ", " + (!curTrans.isEmpty() ? curTrans : nil) + ") ->";//right.join(", ")
+					ui->lwOutput->addItem(step);
+				}
+				else{
+					ui->lwOutput->addItem(step);
+					allSteps << QString::fromUtf8("Не найден переход для текущего состояния с таким содержимым магазина ") << first;
+					flag = false;
+					break;
+				}
+			}
 			else{ // Did not founf mag simbol
 				ui->lwOutput->addItem(step);
-				allSteps << QString::fromUtf8("Не найден переход для текущего состояния с таким содержимым магазина");
+				allSteps << QString::fromUtf8("Не найден переход для текущего состояния с таким содержимым магазина ") << first;
 				flag = false;
 				break;
 			}
@@ -295,7 +327,7 @@ void Widget::on_leInput_editingFinished()
 				if(right.at(2) != nil){
 					curTrans.append(right.at(2));
 				}
-				step += " -> (" + curState + ", " + curMag + ", " + curTrans + ") ->";//right.join(", ")
+				step += " -> (" + curState + ", " + curMag + ", " + (!curTrans.isEmpty() ? curTrans : nil) + ") ->";//right.join(", ")
 				ui->lwOutput->addItem(step);
 			}
 			else{ // Did not found mag Simbol for Empty Step
@@ -314,6 +346,7 @@ void Widget::on_leInput_editingFinished()
 		}
 	}
 
+	ui->lwOutput->addItem(QString::fromUtf8("Результат:"));
 	QString rest = "(" + curState + ", ";
 
 	bool Alright = true;

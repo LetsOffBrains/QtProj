@@ -11,41 +11,11 @@ MainWindow::MainWindow(QWidget *parent) :
 	separator = " ";
 
 	toMul = 1;
-
-	connect(ui->aTheme, SIGNAL(triggered()), this, SLOT(on_aTheme_activated()));
-	connect(ui->aAuthor, SIGNAL(triggered()), this, SLOT(on_aAuthor_activated()));
-	connect(ui->aSave, SIGNAL(triggered()), this, SLOT(on_aSave_activated()));
 }
 
 MainWindow::~MainWindow()
 {
 	delete ui;
-}
-
-void MainWindow::on_aTheme_activated()
-{
-	QMessageBox::about(this, "О Теме",
-					   "Тема:\n"
-					   "Написать программу, которая по предложенному описанию языка построит"
-					   "регулярное выражение, задающее этот язык, и сгенерирует с"
-					   "его помощью все цепочки языка в заданном диапазоне длин. Предусмотреть"
-					   "также возможность генерации цепочек по введённому пользователем"
-					   "РВ (в рамках варианта).\n"
-					   "Вариант 9:\n"
-					   "Алфавит, кратность вхождения некоторого символа алфавита во"
-					   "все цепочки языка и заданная подцепочка всех цепочек языка.");
-}
-
-void MainWindow::on_aAuthor_activated()
-{
-	QMessageBox::about(this, "Об Авторе",
-					   "Красильников Антон\n"
-					   "Студент группы ИП-512");
-}
-
-void MainWindow::on_aSave_activated()
-{
-
 }
 
 void MainWindow::on_leTerm_editingFinished()
@@ -193,7 +163,7 @@ void MainWindow::on_leSubString_returnPressed()
 
 void MainWindow::on_pbOutput_clicked()
 {
-	ui->teOutput->clear();
+	ui->lwOutput->clear();
 
 	QString RegEx = ui->teRegEx->toPlainText();
 	RegEx.remove(' ');
@@ -201,11 +171,38 @@ void MainWindow::on_pbOutput_clicked()
 	RegEx.remove('\t');
 
 	if(check_RegEx(RegEx)){
-		mapBlocks.clear();
-		split_RegEx(RegEx, "Start");
+		oldTerm = vTerm;
+		oldToRepeat = toRepeat;
+		oldSubString = subString;
+		oldToMul = toMul;
+
+		qDebug() << "Making SignTree";
+		signTree = new SignNode(RegEx);
+		qDebug() << "Making TreeWidget";
+		ui->treeWidget->clear();
+		ui->treeWidget->addTopLevelItem(new QTreeWidgetItem(QStringList("Start")));
+		signTree->toTreeWidget(ui->treeWidget->topLevelItem(0));
+		qDebug() << "Showing TreeWidget";
+		ui->treeWidget->expandAll();
+
+		qDebug() << "Generating strings";
+
+		QStringList temp = signTree->generate(ui->sbFrom->value(), ui->sbTo->value(), mapSave);
+//		qDebug() << "Strings generated:" << temp;
+		mapSave.clear();
+		cutResult(temp, ui->sbFrom->value(), ui->sbTo->value());
+//		qDebug() << "Strings cut:" << temp;
+
+//		ui->lwOutput->addItems(temp);
+		for(auto i : temp){
+			ui->lwOutput->addItem(QString::number(i.size()) + " \t" + i);
+		}
+
+
+		ui->lwOutput->sortItems();
 	}
 	else{
-		ui->teOutput->setPlainText("Не верное регулярное выражение");
+		ui->lwOutput->addItem("Не верное регулярное выражение");
 	}
 
 //	RegEx.replace('+', '|');
@@ -225,7 +222,8 @@ bool MainWindow::check_RegEx(QString RegEx)
 		if(!simbols.exactMatch(RegEx.mid(i, 1))
 				&& RegEx[i] != '(' && RegEx[i] != ')'
 				&& RegEx[i] != '*' && RegEx[i] != '+'){
-			qDebug() << "Найден недопустимый символ в позиции: " << simbols.matchedLength();
+//			qDebug() << "Найден недопустимый символ в позиции: " << simbols.matchedLength();
+			ui->lwOutput->addItem("Найден недопустимый символ в позиции: " + QString::number(simbols.matchedLength()));
 			return false;
 		}
 	}
@@ -239,126 +237,113 @@ bool MainWindow::check_RegEx(QString RegEx)
 		else if(RegEx[i] == ')'){
 			++right;
 			if(left < right){
-				qDebug() << "Найдена закрывающая скобка без открывающей в позиции: " << i;
+				ui->lwOutput->addItem("Найдена закрывающая скобка без открывающей в позиции: " + QString::number(i));
+//				qDebug() << "Найдена закрывающая скобка без открывающей в позиции: " << i;
 				return false;
 			}
 			if(i == last + 1){
-				qDebug() << "Найден пустой блок скобок в позиции: " << i;
+				ui->lwOutput->addItem("Найден пустой блок скобок в позиции: " + QString::number(i));
+//				qDebug() << "Найден пустой блок скобок в позиции: " << i;
 				return false;
 			}
 		}
 		else if(RegEx[i] == '*'){
 			if(i == 0){
-				qDebug() << "Найдена звездочка в начале";
+				ui->lwOutput->addItem("Найдена звездочка в начале");
+//				qDebug() << "Найдена звездочка в начале";
 				return false;
 			}
 			else{
 				if(RegEx[i - 1] == '+' || RegEx[i - 1] == '(' || RegEx[i - 1] == '*'){
-					qDebug() << "Найден недопустимый символ перед звездочкой в позиции: " << i - 1;
+					ui->lwOutput->addItem("Найден недопустимый символ перед звездочкой в позиции: " + QString::number(i - 1));
+//					qDebug() << "Найден недопустимый символ перед звездочкой в позиции: " << i - 1;
 					return false;
 				}
 			}
 		}
 		else if(RegEx[i] == '+'){
 			if(i == 0){
-				qDebug() << "Найден плюс в начале";
+				ui->lwOutput->addItem("Найден плюс в начале");
+//				qDebug() << "Найден плюс в начале";
 				return false;
 			}
 			else{
 				if(RegEx[i - 1] == '('){
-					qDebug() << "Найден недопустимый символ перед плюсом в позиции: " << i - 1;
+					ui->lwOutput->addItem("Найден недопустимый символ перед плюсом в позиции: " + QString::number(i - 1));
+//					qDebug() << "Найден недопустимый символ перед плюсом в позиции: " << i - 1;
 					return false;
 				}
 			}
 		}
 	}
 	if(left != right){
-		qDebug() << "Не хватает закрывающей скобки";
+		ui->lwOutput->addItem("Не хватает закрывающей скобки");
+//		qDebug() << "Не хватает закрывающей скобки";
 		return false;
 	}
 
 	return true;
 }
 
-void MainWindow::split_RegEx(QString RegEx, QString parent)
+void MainWindow::cutResult(QStringList &list, int min, int max)
 {
-	qDebug() << "RegEx: " << RegEx;
-	QStringList list;
-	int left = 0, right = 0, last = 0;
-	if(RegEx[0] == '('){
-		++left;
+	qDebug() << "Checking First";
+	while(!list.isEmpty() && (list.first().size() < min || list.first().size() > max)){
+		list.removeFirst();
 	}
 
-	for(int i = 1; i <= RegEx.length(); ++i){
-		if(RegEx[i] == '('){
-			if(left == right && i != last){
-				list << RegEx.mid(last, i - last);
-				last = i;
-				left = right = 0;
-			}
-			++left;
-		}
-		else if(RegEx[i] == ')'){
-			++right;
-		}
-		else if(left == right && i != last){
-			if(RegEx[i] == '*'){
-				list << RegEx.mid(last, i - last + 1);
-				last = i + 1;
-				if(RegEx[i - 1] == ')'){
-					left = right = 0;
-				}
+	if(!list.isEmpty()){
+		auto it = list.begin();
+		qDebug() << "Checking Other";
+		while (it + 1 != list.end()) {
+			auto tmp = it + 1;
+			if(tmp->size() < min || tmp->size() > max){
+				list.erase(tmp);
 			}
 			else{
-				list << RegEx.mid(last, i - last);
-				last = i;
+				++it;
 			}
 		}
 	}
+	qDebug() << "Checking Complete";
+	list.removeDuplicates();
+}
 
-	if(list.count() > 1){
-		qDebug() << "BlockList:" << list;
-		for(int i = 0; i < list.count(); ++i){
-			if(list.at(i).length() > 1){
-				split_RegEx(list.at(i), RegEx);
-			}
-			else{
-				mapBlocks.insert(parent, QStringList(list.at(i)));
-			}
+void MainWindow::on_aSave_triggered()
+{
+	QFile file(QFileDialog::getSaveFileName(this, "Сохранить"));
+
+	if(file.open(QIODevice::WriteOnly)){
+		file.write(QString("Term: " + oldTerm.join(", ") + '\n').toUtf8());
+		file.write(QString("ToRepeat: " + oldToRepeat + '\n').toUtf8());
+		file.write(QString("SubString: " + oldSubString + '\n').toUtf8());
+		file.write(QString("ToMul: " + QString::number(oldToMul) + '\n').toUtf8());
+		QStringList list;
+		for(int i = 0; i < ui->lwOutput->count(); ++i){
+			list << ui->lwOutput->item(i)->text();
 		}
-	}
-	else{
-		QString str = list.at(0);
-		if(str.left(1) == "("){
-			str.remove(0, 1);
-			if(str.right(1) == ")"){
-				str.chop(1);
-				split_RegEx(str, RegEx);
-			}
-			else if(str.right(2) == ")*"){
-				str.chop(2);
-				split_RegEx(str, RegEx);
-			}
-		}
-		else{
-			mapBlocks.insert(parent, QStringList(str));
-		}
+		file.write(QString("Result: " + list.join("\n") + '\n').toUtf8());
+		file.close();
 	}
 }
 
+void MainWindow::on_aTheme_triggered()
+{
+	QMessageBox::about(this, "О Теме",
+					   "Тема:\n"
+					   "Написать программу, которая по предложенному описанию языка построит"
+					   "регулярное выражение, задающее этот язык, и сгенерирует с"
+					   "его помощью все цепочки языка в заданном диапазоне длин. Предусмотреть"
+					   "также возможность генерации цепочек по введённому пользователем"
+					   "РВ (в рамках варианта).\n"
+					   "Вариант 9:\n"
+					   "Алфавит, кратность вхождения некоторого символа алфавита во"
+					   "все цепочки языка и заданная подцепочка всех цепочек языка.");
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void MainWindow::on_aAuthor_triggered()
+{
+	QMessageBox::about(this, "Об Авторе",
+					   "Красильников Антон\n"
+					   "Студент группы ИП-512");
+}

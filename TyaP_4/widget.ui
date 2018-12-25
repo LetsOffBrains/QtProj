@@ -54,7 +54,7 @@
         <string>Алфавит исходный</string>
        </property>
        <property name="text">
-        <string>0 1</string>
+        <string>a + *</string>
        </property>
        <property name="placeholderText">
         <string>Входной алфавит</string>
@@ -64,7 +64,7 @@
      <item row="4" column="0" colspan="2">
       <widget class="QLineEdit" name="leStates">
        <property name="text">
-        <string>S A B</string>
+        <string>q</string>
        </property>
        <property name="placeholderText">
         <string>Конечное множество состояний</string>
@@ -74,7 +74,7 @@
      <item row="3" column="0" colspan="2">
       <widget class="QLineEdit" name="leMag">
        <property name="text">
-        <string>Z 0 1</string>
+        <string>E + *</string>
        </property>
        <property name="placeholderText">
         <string>Магазинный алфавит</string>
@@ -84,7 +84,7 @@
      <item row="6" column="0" colspan="2">
       <widget class="QLineEdit" name="leFinish">
        <property name="text">
-        <string>A</string>
+        <string>q</string>
        </property>
        <property name="placeholderText">
         <string>Подмножество заключительных состояний</string>
@@ -94,7 +94,7 @@
      <item row="7" column="0" colspan="2">
       <widget class="QLineEdit" name="leStartMag">
        <property name="text">
-        <string>Z</string>
+        <string>E</string>
        </property>
        <property name="placeholderText">
         <string>Начальное содержимое магазина</string>
@@ -179,21 +179,6 @@
          <string>5</string>
         </property>
        </row>
-       <row>
-        <property name="text">
-         <string>6</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>7</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>8</string>
-        </property>
-       </row>
        <column>
         <property name="text">
          <string>Левая часть правила</string>
@@ -206,82 +191,52 @@
        </column>
        <item row="0" column="0">
         <property name="text">
-         <string>S 0 Z</string>
+         <string>q * E</string>
         </property>
        </item>
        <item row="0" column="1">
         <property name="text">
-         <string>S 0Z 00</string>
+         <string>q EE* @</string>
         </property>
        </item>
        <item row="1" column="0">
         <property name="text">
-         <string>S 0 0</string>
+         <string>q @ +</string>
         </property>
        </item>
        <item row="1" column="1">
         <property name="text">
-         <string>S 00 00</string>
+         <string>q @ +</string>
         </property>
        </item>
        <item row="2" column="0">
         <property name="text">
-         <string>S 1 0</string>
+         <string>q a E</string>
         </property>
        </item>
        <item row="2" column="1">
         <property name="text">
-         <string>A 0 @</string>
+         <string>q @ a</string>
         </property>
        </item>
        <item row="3" column="0">
         <property name="text">
-         <string>A 1 0</string>
+         <string>q + E</string>
         </property>
        </item>
        <item row="3" column="1">
         <property name="text">
-         <string>B 0 @</string>
+         <string>q EE+ @</string>
         </property>
        </item>
        <item row="4" column="0">
         <property name="text">
-         <string>A 1 Z</string>
+         <string>q @ *</string>
         </property>
        </item>
        <item row="4" column="1">
         <property name="text">
-         <string>B Z @</string>
-        </property>
-       </item>
-       <item row="5" column="0">
-        <property name="text">
-         <string>B 1 0</string>
-        </property>
-       </item>
-       <item row="5" column="1">
-        <property name="text">
-         <string>A @ 1</string>
-        </property>
-       </item>
-       <item row="6" column="0">
-        <property name="text">
-         <string>B 1 Z</string>
-        </property>
-       </item>
-       <item row="6" column="1">
-        <property name="text">
-         <string>A @ 1</string>
-        </property>
-       </item>
-       <item row="7" column="0">
-        <property name="text">
-         <string>A @ Z</string>
-        </property>
-       </item>
-       <item row="7" column="1">
-        <property name="text">
-         <string>A @ @</string>
+         <string>q @ *</string>
         </property>
        </item>
       </widget>
@@ -292,7 +247,7 @@
         <string>Алфавит второй</string>
        </property>
        <property name="text">
-        <string>0 1</string>
+        <string>a + *</string>
        </property>
        <property name="placeholderText">
         <string>Алфавит для перевода</string>

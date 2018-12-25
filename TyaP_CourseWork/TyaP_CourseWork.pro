@@ -26,10 +26,12 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    signnode.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    signnode.h
 
 FORMS += \
         mainwindow.ui
