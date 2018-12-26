@@ -18,14 +18,14 @@ SignNode::SignNode(QString RegEx)
 				}
 			}
 			newList << str;
-			//			qDebug() << "BlockList:" << newList;
+			qDebug() << "BlockList:" << newList;
 			sign = "+";
 			for(auto i : newList){
 				nodes << SignNode(i);
 			}
 		}
 		else{
-			//			qDebug() << "BlockList:" << list;
+			qDebug() << "BlockList:" << list;
 			sign = "x";
 			for(auto i : list){
 				nodes << SignNode(i);
@@ -35,6 +35,7 @@ SignNode::SignNode(QString RegEx)
 	else{
 		QString str = list.at(0);
 		if(str.left(1) == "("){
+			qDebug() << "Block:" << str;
 			str.remove(0, 1);
 			if(str.right(1) == ")"){
 				str.chop(1);
@@ -46,6 +47,12 @@ SignNode::SignNode(QString RegEx)
 				nodes << SignNode(str);
 			}
 		}
+		else if(str.right(1) == "*"){
+			qDebug() << "Block:" << str;
+			str.chop(1);
+			sign = "*";
+			nodes << SignNode(str);
+		}
 		else{
 			sign.clear();
 			simbol = str;
@@ -56,6 +63,9 @@ SignNode::SignNode(QString RegEx)
 QStringList SignNode::split_to_blocks(QString RegEx)
 {
 	//	qDebug() << "RegEx: " << RegEx;
+	if(RegEx.size() == 1){
+		return QStringList(RegEx);
+	}
 	QStringList list;
 	int left = 0, right = 0, start = -1, i = 0;
 
@@ -91,7 +101,18 @@ QStringList SignNode::split_to_blocks(QString RegEx)
 			}
 		}
 		else if(start == -1){
-			list << RegEx.mid(i, 1);
+			if(i + 1 < RegEx.size()){
+				if(RegEx[i + 1] == '*'){
+					list << RegEx.mid(i, 2);
+					++i;
+				}
+				else{
+					list << RegEx.mid(i, 1);
+				}
+			}
+			else{
+				list << RegEx.mid(i, 1);
+			}
 		}
 	}
 
@@ -123,7 +144,7 @@ QStringList SignNode::generate(int min, int max, QMap<QString, QStringList> &map
 			for(auto i : nodes){
 				list << i.generate(min, max, mapSave);
 			}
-//			qDebug() << "O:" << list;
+			qDebug() << "Or:" << list;
 		}
 		else if(sign == "x"){
 			list = nodes[0].generate(min, max, mapSave);
@@ -132,7 +153,7 @@ QStringList SignNode::generate(int min, int max, QMap<QString, QStringList> &map
 				QStringList temp = nodes[i].generate(min, max, mapSave);
 				list = concatenate(list, temp, max);
 			}
-//			qDebug() << "C:" << list;
+			qDebug() << "C:" << list;
 		}
 		else if(sign == "*"){
 			QString block = makeBlock();
@@ -144,7 +165,7 @@ QStringList SignNode::generate(int min, int max, QMap<QString, QStringList> &map
 				list = multiply(list, max);
 				mapSave[block] = list;
 			}
-//			qDebug() << "M:" << list;
+			qDebug() << "M:" << list;
 		}
 	}
 	else{
@@ -180,6 +201,7 @@ QStringList SignNode::multiply(QStringList &list, int max)
 					result << str;
 			}
 		}
+		result.removeDuplicates();
 		++i;
 	}
 	result << "";
@@ -202,12 +224,18 @@ QString SignNode::makeBlock()
 		else if(sign == "x"){
 			QStringList temp;
 			for(auto i : nodes){
-				temp << i.makeBlock();
+				if(i.sign == "+")
+					temp << "(" + i.makeBlock() + ")";
+				else
+					temp << i.makeBlock();
 			}
 			result = temp.join("");
 		}
 		else if(sign == "*"){
-			result = "(" + nodes[0].makeBlock() + ")*";
+			if(nodes[0].sign.isEmpty())
+				result = nodes[0].simbol + "*";
+			else
+				result = "(" + nodes[0].makeBlock() + ")*";
 		}
 	}
 	else{

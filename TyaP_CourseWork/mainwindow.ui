@@ -207,7 +207,7 @@
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Окно ввода регулярного выражения.&lt;/p&gt;&lt;p&gt;Допустимые операторы:&lt;/p&gt;&lt;p&gt;+ - или&lt;/p&gt;&lt;p&gt;* - повторение от 0 до бесконечности&lt;/p&gt;&lt;p&gt;() - группировка&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="plainText">
-        <string>(ab+bc)*</string>
+        <string>((0)*+(1)*)*</string>
        </property>
        <property name="placeholderText">
         <string/>

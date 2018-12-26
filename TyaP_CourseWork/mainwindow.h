@@ -23,13 +23,11 @@ public:
     QStringList forbiden;
     QString separator;
 
-	QStringList vTerm;
+	QStringList vTerm, result;
 	QString toRepeat, subString;
     int toMul;
 
-	QStringList oldTerm;
-	QString oldToRepeat, oldSubString;
-	int oldToMul;
+	QString oldRegEx;
 
 	QMap<QString, QStringList> mapSave;
 

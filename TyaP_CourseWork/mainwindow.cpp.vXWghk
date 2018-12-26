@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 	ui->setupUi(this);
 
-	forbiden << "*" << "(" << ")" << "+" << "[" << "]" << "|" << "\\" << "\n" << "\t" << " ";
+	forbiden << "*" << "(" << ")" << "+" << "[" << "]" << "|" << "\\";
 	separator = " ";
 
 	toMul = 1;
@@ -146,7 +146,7 @@ void MainWindow::on_pbCreateReg_clicked()
 			for(int i = 0; i < toMul; ++i){
 				str += toRepeat + blockRegEx;
 			}
-			str += ")*" + blockRegEx;
+			str += ")*";
 		}else{
 			str = blockRegEx;
 		}
@@ -171,7 +171,10 @@ void MainWindow::on_pbOutput_clicked()
 	RegEx.remove('\t');
 
 	if(check_RegEx(RegEx)){
-		oldRegEx = RegEx;
+		oldTerm = vTerm;
+		oldToRepeat = toRepeat;
+		oldSubString = subString;
+		oldToMul = toMul;
 
 		qDebug() << "Making SignTree";
 		signTree = new SignNode(RegEx);
@@ -184,14 +187,14 @@ void MainWindow::on_pbOutput_clicked()
 
 		qDebug() << "Generating strings";
 
-		result = signTree->generate(ui->sbFrom->value(), ui->sbTo->value(), mapSave);
-		qDebug() << "Strings generated:" << result;
+		QStringList temp = signTree->generate(ui->sbFrom->value(), ui->sbTo->value(), mapSave);
+		qDebug() << "Strings generated:" << temp;
 		mapSave.clear();
-		cutResult(result, ui->sbFrom->value(), ui->sbTo->value());
-		qDebug() << "Strings cut:" << result;
+		cutResult(temp, ui->sbFrom->value(), ui->sbTo->value());
+//		qDebug() << "Strings cut:" << temp;
 
 //		ui->lwOutput->addItems(temp);
-		for(auto i : result){
+		for(auto i : temp){
 			ui->lwOutput->addItem(QString::number(i.size()) + " \t" + i);
 		}
 
@@ -311,8 +314,15 @@ void MainWindow::on_aSave_triggered()
 	QFile file(QFileDialog::getSaveFileName(this, "Сохранить"));
 
 	if(file.open(QIODevice::WriteOnly)){
-		file.write(QString("RegEx: " + oldRegEx + '\n').toUtf8());
-		file.write(QString(result.join("\n")).toUtf8());
+		file.write(QString("Term: " + oldTerm.join(", ") + '\n').toUtf8());
+		file.write(QString("ToRepeat: " + oldToRepeat + '\n').toUtf8());
+		file.write(QString("SubString: " + oldSubString + '\n').toUtf8());
+		file.write(QString("ToMul: " + QString::number(oldToMul) + '\n').toUtf8());
+		QStringList list;
+		for(int i = 0; i < ui->lwOutput->count(); ++i){
+			list << ui->lwOutput->item(i)->text();
+		}
+		file.write(QString("Result: " + list.join("\n") + '\n').toUtf8());
 		file.close();
 	}
 }
